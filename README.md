@@ -1,36 +1,63 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Rizqy Utama Electric — Online Store (Next.js + MySQL)
 
-## Getting Started
+Website toko material listrik **khusus tampilan pelanggan** (pembeli): katalog produk, keranjang belanja, dan checkout via WhatsApp. Panel admin menyusul di folder terpisah.
 
-First, run the development server:
+- **Stack:** Next.js 16 (App Router) · React 19 · TypeScript · Tailwind CSS 4 · mysql2
+- **Database:** MySQL `rizqyutamaelectric` (tabel `products`, `categories` — sudah berisi data awal)
+- **Checkout:** kirim ringkasan order ke WhatsApp (nomor dari `NEXT_PUBLIC_WA_NUMBER`)
+- **Desain:** navy `#0A1F44` · orange `#FF7A00` · putih
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+## Fitur (Halaman Pelanggan)
+
+| Rute | Fungsi |
+|------|--------|
+| `/` | Katalog: hero, pencarian (`?q`), filter kategori (`?kategori`), grid produk + badge unggulan/stok |
+| `/produk/[slug]` | Detail produk: harga, stok, deskripsi, tambah ke keranjang (dengan pilih jumlah), produk sejenis |
+| `/kategori` | Semua kategori + jumlah produk |
+| `/keranjang` | Kelola keranjang (`localStorage`): ubah qty, hapus, kosongkan, subtotal |
+| `/checkout` | Form pemesan (nama/HP/alamat/catatan) → buka `wa.me` berisi ringkasan order |
+
+> Panel `/admin` belum ada — disusul di iterasi berikutnya. Prompt siap pakai untuk membuatnya ada di [`docs/ADMIN-PROMPT.md`](docs/ADMIN-PROMPT.md).
+
+## Menjalankan
+
+```sh
+npm install
+
+# Isi .env.local (sudah tersedia):
+#   MYSQL_*     -> koneksi MySQL 127.0.0.1:3306, db rizqyutamaelectric
+#   NEXT_PUBLIC_WA_NUMBER -> nomor WA admin (628… tanpa + / 0)
+
+npm run dev        # http://localhost:3000
+# atau produksi
+npm run build && npm start
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Struktur
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```
+app/                  halaman (server component, query langsung MySQL via lib/db.ts)
+  page.tsx                katalog
+  produk/[slug]/page.tsx  detail produk
+  kategori/page.tsx       semua kategori
+  keranjang/page.tsx      keranjang
+  checkout/page.tsx       checkout
+components/
+  Header.tsx / Footer.tsx
+  ProductCard.tsx / AddToCartWidget.tsx (stepper jumlah + tambah)
+  cart/CartView.tsx       (client) isi keranjang
+  checkout/CheckoutForm.tsx (client) form + buat link wa.me
+context/CartContext.tsx   keranjang berbasis localStorage (React Context)
+lib/
+  db.ts                   pool mysql2 + helper query<T>
+  types.ts                tipe Category & Product
+  format.ts               format Rp, wa.me, build pesan order
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Database
 
-## Learn More
+Tabel dibuat dari implementasi sebelumnya dan dipakai apa adanya (tanpa migrasi):
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- `categories(id, name, slug)`
+- `products(id, category_id, name, slug, sku, description, price, stock, image, featured, is_active)`
+- Terisi 6 kategori + 12 produk contoh + 1 admin (`users.is_admin`) untuk kebutuhan panel admin nanti.
