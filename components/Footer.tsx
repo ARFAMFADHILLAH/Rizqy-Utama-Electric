@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { storeName, waNumber } from "@/lib/format";
+import SocialLinks from "@/components/SocialLinks";
 
 export default function Footer() {
   return (
@@ -18,6 +19,12 @@ export default function Footer() {
               Kategori
             </Link>
           </nav>
+          <p className="mt-5 text-xs font-semibold uppercase tracking-wide text-navy-400">
+            Ikuti &amp; belanja di
+          </p>
+          <div className="mt-2">
+            <SocialLinks variant="footer" />
+          </div>
         </div>
         <div className="text-sm">
           <p className="text-navy-300">Order & konsultasi via WhatsApp</p>

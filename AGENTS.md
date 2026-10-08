@@ -19,4 +19,5 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 - `params` di halaman dynamic masih Promise → harus `await`.
 - Semua komponen yang memakai `useCart()` harus "use client". Keranjang = `localStorage` via `context/CartContext.tsx`.
 - Nomor WA toko: `NEXT_PUBLIC_WA_NUMBER` (format 628…) — nilai `NEXT_PUBLIC_*` ikut ter-bake saat build. Helpers di `lib/format.ts`.
+- Link sosmed/marketplace (Instagram, LinkedIn, Tokopedia, Shopee, Blibli): env `NEXT_PUBLIC_*_URL` dibaca `lib/social.ts`, dirender `components/SocialLinks.tsx` (header + footer). Kosong → `#`/nonaktif.
 - Commands: `npm run dev`, `npm run build` (menghasilkan `out/`), `npm run preview` (serve `out/`), `npm run lint`.

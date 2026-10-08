@@ -18,7 +18,7 @@ Website toko material listrik **khusus tampilan pelanggan** (pembeli): katalog p
 | `/keranjang` | Kelola keranjang (`localStorage`): ubah qty, hapus, kosongkan, subtotal |
 | `/checkout` | Form pemesan (nama/HP/alamat/catatan) → buka `wa.me` berisi ringkasan order |
 
-Fitur global: **bottom navigation** mobile, **chatbot FAQ** (rule-based + lanjut ke WhatsApp), keranjang tersimpan di `localStorage`.
+Fitur global: **bottom navigation** mobile, **chatbot FAQ** (rule-based + lanjut ke WhatsApp), **link sosial & marketplace** (Instagram, LinkedIn, Tokopedia, Shopee, Blibli) di header & footer, keranjang tersimpan di `localStorage`.
 
 > Panel `/admin` belum ada — disusul di iterasi berikutnya. Prompt siap pakai untuk membuatnya ada di [`docs/ADMIN-PROMPT.md`](docs/ADMIN-PROMPT.md).
 
@@ -32,6 +32,7 @@ npm install
 #   MYSQL_*         -> cadangan; dipakai jika SUPABASE_DB_URL kosong
 #   NEXT_PUBLIC_WA_NUMBER  -> nomor WA admin (628… tanpa + / 0)
 #   NEXT_PUBLIC_STORE_NAME -> nama toko (opsional)
+#   NEXT_PUBLIC_INSTAGRAM_URL / LINKEDIN_URL / TOKOPEDIA_URL / SHOPEE_URL / BLIBLI_URL -> link sosmed & marketplace
 
 npm run dev                    # http://localhost:3000
 npm run build && npm run preview   # build static -> out/, lalu serve lokal
@@ -48,6 +49,7 @@ npm run build && npm run preview   # build static -> out/, lalu serve lokal
      - `SUPABASE_DB_URL` — koneksi Supabase Postgres (session pooler)
      - `NEXT_PUBLIC_WA_NUMBER` — nomor WA admin
      - `NEXT_PUBLIC_STORE_NAME` — nama toko (opsional)
+     - `NEXT_PUBLIC_INSTAGRAM_URL`, `NEXT_PUBLIC_LINKEDIN_URL`, `NEXT_PUBLIC_TOKOPEDIA_URL`, `NEXT_PUBLIC_SHOPEE_URL`, `NEXT_PUBLIC_BLIBLI_URL` — link sosmed & marketplace (opsional)
 3. Save & Deploy. Cloudflare menjalankan `next build` lalu menyajikan folder `out/`.
 
 > **Penting:** karena HTML-nya statis, data produk diambil sekali saat build. Setiap kali data di Supabase berubah, jalankan **Retry deployment** (atau push commit baru) agar perubahan ikut terbit.

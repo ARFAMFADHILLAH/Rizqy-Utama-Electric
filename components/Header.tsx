@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useCart } from "@/context/CartContext";
+import SocialLinks from "@/components/SocialLinks";
 
 export default function Header() {
   const { count } = useCart();
@@ -35,6 +36,11 @@ export default function Header() {
             Cari
           </button>
         </form>
+
+        {/* Sosmed & marketplace — desktop */}
+        <div className="hidden items-center md:flex">
+          <SocialLinks variant="header" />
+        </div>
 
         <nav className="ml-auto flex items-center gap-1 md:ml-0">
           <Link
