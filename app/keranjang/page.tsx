@@ -3,6 +3,8 @@ import type { Product } from "@/lib/types";
 import CartView from "@/components/cart/CartView";
 
 
+export const dynamic = "force-static";
+
 export const metadata = { title: "Keranjang Belanja" };
 
 export default async function CartPage() {

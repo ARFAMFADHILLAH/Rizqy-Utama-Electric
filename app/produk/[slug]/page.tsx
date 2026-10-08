@@ -11,6 +11,8 @@ import Stars from "@/components/Stars";
 // =========================================================================
 // FUNCTION TAMBAHAN AGAR BISA DI-EXPORT STATIS OLEH CLOUDFLARE
 // =========================================================================
+export const dynamicParams = false;
+
 export async function generateStaticParams() {
   try {
     // Mengambil daftar slug produk yang aktif dari database Supabase saat build

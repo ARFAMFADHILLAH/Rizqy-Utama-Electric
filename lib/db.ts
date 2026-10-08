@@ -1,6 +1,7 @@
 import mysql, { type ExecuteValues } from "mysql2/promise";
 import { Pool, types as pgTypes } from "pg";
 
+
 // Postgres mengembalikan bigint (int8) sebagai string — paksa ke number
 // supaya cocok dengan tipe `id`, `price`, dan `COUNT(...)` di lib/types.ts.
 pgTypes.setTypeParser(20, (value) => parseInt(value, 10));

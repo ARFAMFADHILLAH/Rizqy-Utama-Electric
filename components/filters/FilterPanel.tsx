@@ -2,15 +2,9 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
-import type { Category } from "@/lib/types";
+import type { Category, FilterState } from "@/lib/types";
 
-export type FilterState = {
-  kategori: string[];
-  q: string;
-  min: string;
-  max: string;
-  sort: string;
-};
+export type { FilterState };
 
 export const SORT_OPTIONS = [
   { value: "unggulan", label: "Unggulan" },

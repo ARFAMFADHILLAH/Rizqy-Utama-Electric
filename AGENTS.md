@@ -11,9 +11,12 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 # Project notes — Rizqy Utama Electric
 
 - Next.js 16 App Router + TypeScript + Tailwind v4 + `pg` (Supabase) / `mysql2` (cadangan), tanpa ORM, tanpa Prisma.
-- Database: **Supabase Postgres** via env `SUPABASE_DB_URL` (session pooler `aws-0-ap-northeast-1.pooler.supabase.com:5432`). Schema + seed: `supabase/schema.sql` (sekali, di SQL Editor Supabase). `SUPABASE_DB_URL` kosong → otomatis fallback ke MySQL (`MYSQL_*`, `127.0.0.1:3306`).
-- Akses DB hanya lewat `lib/db.ts` → `query<T>(sql, params)`. Placeholder selalu `?` (driver pg mengonversi ke `$1..$n`); tulis SQL portabel MySQL/Postgres: `= TRUE`, `LOWER(col) LIKE LOWER(?)`. Halaman data wajib `export const dynamic = "force-dynamic"`.
-- `params`/`searchParams` di halaman adalah Promise → harus `await`.
+- **Deploy: Cloudflare Pages dengan `output: "export"` (HTML statis murni, folder `out/`).** Karena itu **tidak ada server saat runtime** — semua query DB hanya dijalankan saat `next build`.
+- Database: **Supabase Postgres** via env `SUPABASE_DB_URL` (session pooler `aws-0-ap-northeast-1.pooler.supabase.com:5432`). Schema + seed: `supabase/schema.sql` (sekali, di SQL Editor Supabase). `SUPABASE_DB_URL` kosong → otomatis fallback ke MySQL (`MYSQL_*`, `127.0.0.1:3306`). Env ini **wajib tersedia saat build**.
+- Akses DB hanya lewat `lib/db.ts` → `query<T>(sql, params)`. Placeholder selalu `?` (driver pg mengonversi ke `$1..$n`); tulis SQL portabel MySQL/Postgres: `= TRUE`, `LOWER(col) LIKE LOWER(?)`.
+- Halaman data (server component) dirender saat build. Dynamic route wajib `generateStaticParams()` + `export const dynamicParams = false`. **Jangan** pakai `force-dynamic`, `cookies()`, `headers()`, Route Handler yang baca request — tidak didukung static export.
+- Filter/pencarian homepage **di sisi client** (query param dibaca via `useSearchParams`): `components/home/HomeBrowser.tsx` (client) → `lib/filter.ts` → `components/home/HomeView.tsx` (presentasional, dipakai juga sebagai fallback server-rendered). Logika filter harus tetap sinkron dengan `lib/filter.ts` bila menambah opsi.
+- `params` di halaman dynamic masih Promise → harus `await`.
 - Semua komponen yang memakai `useCart()` harus "use client". Keranjang = `localStorage` via `context/CartContext.tsx`.
-- Nomor WA toko: `NEXT_PUBLIC_WA_NUMBER` (format 628…). Helpers di `lib/format.ts`.
-- Commands: `npm run dev`, `npm run build`, `npm run lint`.
+- Nomor WA toko: `NEXT_PUBLIC_WA_NUMBER` (format 628…) — nilai `NEXT_PUBLIC_*` ikut ter-bake saat build. Helpers di `lib/format.ts`.
+- Commands: `npm run dev`, `npm run build` (menghasilkan `out/`), `npm run preview` (serve `out/`), `npm run lint`.

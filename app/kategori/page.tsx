@@ -2,6 +2,7 @@ import Link from "next/link";
 import { query } from "@/lib/db";
 import { storeName } from "@/lib/format";
 
+export const dynamic = "force-static";
 
 export const metadata = { title: "Semua Kategori" };
 

@@ -4,6 +4,14 @@ export type Category = {
   slug: string;
 };
 
+export type FilterState = {
+  kategori: string[];
+  q: string;
+  min: string;
+  max: string;
+  sort: string;
+};
+
 export type Product = {
   id: number;
   category_id: number;

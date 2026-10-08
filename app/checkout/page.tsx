@@ -2,7 +2,7 @@ import { query } from "@/lib/db";
 import type { Product } from "@/lib/types";
 import CheckoutForm from "@/components/checkout/CheckoutForm";
 
-
+export const dynamic = "force-static";
 
 export const metadata = { title: "Checkout" };
 
