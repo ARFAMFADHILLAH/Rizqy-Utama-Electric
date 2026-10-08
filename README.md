@@ -3,7 +3,7 @@
 Website toko material listrik **khusus tampilan pelanggan** (pembeli): katalog produk, keranjang belanja, dan checkout via WhatsApp. Panel admin menyusul di folder terpisah.
 
 - **Stack:** Next.js 16 (App Router, **static export**) · React 19 · TypeScript · Tailwind CSS 4 · pg
-- **Database:** Supabase Postgres (schema + seed: [`supabase/schema.sql`](supabase/schema.sql)) — MySQL siap dipakai lagi lewat env (`SUPABASE_DB_URL` dikosongkan → fallback mysql2)
+- **Database:** Supabase Postgres 
 - **Deploy:** Cloudflare Pages (HTML statis murni, output `out/`) — data di-*snapshot* saat `next build`
 - **Checkout:** kirim ringkasan order ke WhatsApp (nomor dari `NEXT_PUBLIC_WA_NUMBER`)
 - **Desain:** navy `#0A1F44` · orange `#FF7A00` · putih
@@ -20,6 +20,7 @@ Website toko material listrik **khusus tampilan pelanggan** (pembeli): katalog p
 
 Fitur global: **bottom navigation** mobile, **chatbot FAQ** (rule-based + lanjut ke WhatsApp), **link sosial & marketplace** (Instagram, LinkedIn, Tokopedia, Shopee, Blibli) di header & footer, keranjang tersimpan di `localStorage`.
 
+<<<<<<< HEAD
 > Panel `/admin` belum ada — disusul di iterasi berikutnya. Prompt siap pakai untuk membuatnya ada di [`docs/ADMIN-PROMPT.md`](docs/ADMIN-PROMPT.md).
 
 ## Menjalankan
@@ -38,6 +39,8 @@ npm run dev                    # http://localhost:3000
 npm run build && npm run preview   # build static -> out/, lalu serve lokal
 ```
 
+=======
+>>>>>>> fe687aa5907e5be0071e64a2be1f531979585024
 ## Deploy ke Cloudflare Pages
 
 1. Push repo ke GitHub, lalu di Cloudflare Dashboard buat **Pages → Connect to Git**.
@@ -82,12 +85,3 @@ lib/
   types.ts                tipe Category/Product/Banner/Testimonial/Media/FilterState
   format.ts               format Rp, wa.me, build pesan order
 ```
-
-
-## Database
-
-Schema Supabase (Postgres) dibuat dari ERD MySQL yang ada — jalankan [`supabase/schema.sql`](supabase/schema.sql) sekali di SQL Editor Supabase:
-
-- `categories(id, name, slug)`
-- `products(id, category_id, name, slug, sku, description, price, stock, image, featured, is_active)`
-- Terisi 6 kategori + 12 produk contoh + 1 admin (`users.is_admin`) untuk kebutuhan panel admin nanti.
