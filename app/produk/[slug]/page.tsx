@@ -8,6 +8,30 @@ import AddToCartWidget from "@/components/AddToCartWidget";
 import ProductGallery from "@/components/product/ProductGallery";
 import Stars from "@/components/Stars";
 
+// =========================================================================
+// FUNCTION TAMBAHAN AGAR BISA DI-EXPORT STATIS OLEH CLOUDFLARE
+// =========================================================================
+export async function generateStaticParams() {
+  try {
+    // Mengambil daftar slug produk yang aktif dari database Supabase saat build
+    const products = await query<Product[]>(
+      "SELECT slug FROM products WHERE is_active = TRUE"
+    );
+    
+    // Jika driver database mengembalikan array langsung
+    if (Array.isArray(products)) {
+      return products.map((product) => ({
+        slug: product.slug,
+      }));
+    }
+    
+    return [];
+  } catch (error) {
+    console.error("Gagal mengambil data untuk generateStaticParams:", error);
+    return [];
+  }
+}
+// =========================================================================
 
 type Params = Promise<{ slug: string }>;
 
@@ -45,7 +69,7 @@ export default async function ProductDetail({ params }: { params: Params }) {
   );
 
   const inquiry = waLink(
-    `Halo ${storeName()}, saya tertarik dengan produk:\n\n• ${product.name}\n   Harga: ${formatRp(product.price)}\n${product.sku ? `   SKU: ${product.sku}\n` : ""}\nApakah masih tersedia?`,
+    `Halo ${storeName()}, saya tertarik dengan produk:\n\n• ${product.name}\n   Harga: ${formatRp(product.price)}\n${product.sku ? `   SKU: \${product.sku}\n` : ""}\nApakah masih tersedia?`,
   );
 
   return (
