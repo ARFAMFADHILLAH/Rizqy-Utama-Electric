@@ -1,4 +1,3 @@
-export const runtime = 'edge';
 import Link from "next/link";
 import { query } from "@/lib/db";
 import { storeName } from "@/lib/format";
