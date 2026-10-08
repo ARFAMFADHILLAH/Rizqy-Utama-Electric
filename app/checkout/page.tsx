@@ -1,3 +1,4 @@
+export const runtime = 'edge';
 import { query } from "@/lib/db";
 import type { Product } from "@/lib/types";
 import CheckoutForm from "@/components/checkout/CheckoutForm";
