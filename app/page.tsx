@@ -7,7 +7,6 @@ import Testimonials from "@/components/home/Testimonials";
 import FilterPanel from "@/components/filters/FilterPanel";
 import { waNumber } from "@/lib/format";
 
-export const dynamic = "force-dynamic";
 
 type SearchParams = Promise<{
   kategori?: string;

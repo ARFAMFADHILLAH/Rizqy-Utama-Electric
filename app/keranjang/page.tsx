@@ -2,7 +2,6 @@ import { query } from "@/lib/db";
 import type { Product } from "@/lib/types";
 import CartView from "@/components/cart/CartView";
 
-export const dynamic = "force-dynamic";
 
 export const metadata = { title: "Keranjang Belanja" };
 

@@ -8,7 +8,6 @@ import AddToCartWidget from "@/components/AddToCartWidget";
 import ProductGallery from "@/components/product/ProductGallery";
 import Stars from "@/components/Stars";
 
-export const dynamic = "force-dynamic";
 
 type Params = Promise<{ slug: string }>;
 
