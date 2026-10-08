@@ -1,4 +1,4 @@
-# PRD — Rizqy Utama Electric (versi Next.js + MySQL)
+# PRD — Rizqy Utama Electric (versi Next.js + Supabase Postgres)
 
 ## 1. Ringkasan
 Toko online material listrik (kabel, MCB, saklar, lampu LED, pipa, alat ukur). Iterasi ini **fokus halaman pelanggan**: katalog → keranjang → checkout via WhatsApp. Panel admin dibuat menyusul di folder terpisah.
@@ -11,7 +11,7 @@ Toko online material listrik (kabel, MCB, saklar, lampu LED, pipa, alat ukur). I
 ## 3. Non-Goal (iterasi ini)
 - Tidak ada halaman admin (menyusul).
 - Tidak ada akun/login pelanggan, payment gateway, ongkir otomatis.
-- Tidak ada migrasi schema — memakai tabel MySQL yang sudah ada.
+- Tidak ada migrasi schema — skema Supabase dibuat mengikuti tabel MySQL yang sudah ada (`supabase/schema.sql`).
 
 ## 4. Alur Pelanggan
 1. **Katalog** (`/`) — lihat produk, filter kategori, cari.
@@ -30,8 +30,8 @@ Toko online material listrik (kabel, MCB, saklar, lampu LED, pipa, alat ukur). I
 - Responsif; kartu produk 2–4 kolom.
 
 ## 7. Data
-- Tabel existing: `categories` (6) + `products` (12) di MySQL `rizqyutamaelectric`.
-- Konfigurasi: `NEXT_PUBLIC_WA_NUMBER` (nomor WA admin), `MYSQL_*`.
+- Database: Supabase Postgres (`SUPABASE_DB_URL`) — schema + seed 6 kategori & 12 produk contoh di `supabase/schema.sql`. MySQL (`MYSQL_*`) cadangan, aktif bila `SUPABASE_DB_URL` kosong.
+- Konfigurasi: `NEXT_PUBLIC_WA_NUMBER` (nomor WA admin), `SUPABASE_DB_URL`, `MYSQL_*`.
 
 ## 8. Kriteria Selesai (verifikasi)
 - [x] `npm run build` sukses, semua halaman `200`

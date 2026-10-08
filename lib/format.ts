@@ -4,6 +4,17 @@ export function formatRp(value: number): string {
   return "Rp " + new Intl.NumberFormat("id-ID").format(value);
 }
 
+/** Angka ringkas ala e-commerce: 1.200 → "1,2 rb", 1.500.000 → "1,5 jt". */
+export function formatCompact(value: number): string {
+  if (value >= 1_000_000) return (value / 1_000_000).toFixed(1).replace(".", ",") + " jt";
+  if (value >= 1_000) return (value / 1_000).toFixed(1).replace(".", ",") + " rb";
+  return String(value);
+}
+
+export function formatSold(value: number): string {
+  return `${formatCompact(value)} terjual`;
+}
+
 export function waNumber(): string {
   return process.env.NEXT_PUBLIC_WA_NUMBER ?? "";
 }

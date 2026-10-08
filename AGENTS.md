@@ -10,9 +10,9 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 
 # Project notes — Rizqy Utama Electric
 
-- Next.js 16 App Router + TypeScript + Tailwind v4 + `mysql2` (tanpa ORM, tanpa Prisma).
-- Database: MySQL portable di `127.0.0.1:3306`, db `rizqyutamaelectric`, user `root`, tanpa password. Tabel tidak dimigrate — dipakai existing.
-- Akses DB hanya lewat `lib/db.ts` → `query<T>(sql, params)`. Halaman data wajib `export const dynamic = "force-dynamic"`.
+- Next.js 16 App Router + TypeScript + Tailwind v4 + `pg` (Supabase) / `mysql2` (cadangan), tanpa ORM, tanpa Prisma.
+- Database: **Supabase Postgres** via env `SUPABASE_DB_URL` (session pooler `aws-0-ap-northeast-1.pooler.supabase.com:5432`). Schema + seed: `supabase/schema.sql` (sekali, di SQL Editor Supabase). `SUPABASE_DB_URL` kosong → otomatis fallback ke MySQL (`MYSQL_*`, `127.0.0.1:3306`).
+- Akses DB hanya lewat `lib/db.ts` → `query<T>(sql, params)`. Placeholder selalu `?` (driver pg mengonversi ke `$1..$n`); tulis SQL portabel MySQL/Postgres: `= TRUE`, `LOWER(col) LIKE LOWER(?)`. Halaman data wajib `export const dynamic = "force-dynamic"`.
 - `params`/`searchParams` di halaman adalah Promise → harus `await`.
 - Semua komponen yang memakai `useCart()` harus "use client". Keranjang = `localStorage` via `context/CartContext.tsx`.
 - Nomor WA toko: `NEXT_PUBLIC_WA_NUMBER` (format 628…). Helpers di `lib/format.ts`.

@@ -1,10 +1,12 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { query } from "@/lib/db";
-import type { Product } from "@/lib/types";
-import { formatRp, waLink, storeName } from "@/lib/format";
+import type { Product, ProductMedia } from "@/lib/types";
+import { formatCompact, formatRp, waLink, storeName } from "@/lib/format";
 import ProductCard from "@/components/ProductCard";
 import AddToCartWidget from "@/components/AddToCartWidget";
+import ProductGallery from "@/components/product/ProductGallery";
+import Stars from "@/components/Stars";
 
 export const dynamic = "force-dynamic";
 
@@ -17,7 +19,7 @@ export default async function ProductDetail({ params }: { params: Params }) {
     `SELECT p.*, c.name AS category_name, c.slug AS category_slug
        FROM products p
        JOIN categories c ON c.id = p.category_id
-      WHERE p.slug = ? AND p.is_active = 1
+      WHERE p.slug = ? AND p.is_active = TRUE
       LIMIT 1`,
     [slug],
   );
@@ -25,11 +27,19 @@ export default async function ProductDetail({ params }: { params: Params }) {
   const product = products[0];
   if (!product) notFound();
 
+  const media = await query<ProductMedia[]>(
+    `SELECT id, product_id, type, url, sort
+       FROM product_media
+      WHERE product_id = ?
+      ORDER BY CASE WHEN type = 'video' THEN 1 ELSE 0 END, sort ASC, id ASC`,
+    [product.id],
+  );
+
   const related = await query<Product[]>(
     `SELECT p.*, c.name AS category_name, c.slug AS category_slug
        FROM products p
        JOIN categories c ON c.id = p.category_id
-      WHERE p.category_id = ? AND p.id <> ? AND p.is_active = 1
+      WHERE p.category_id = ? AND p.id <> ? AND p.is_active = TRUE
       ORDER BY p.featured DESC, p.id DESC
       LIMIT 4`,
     [product.category_id, product.id],
@@ -53,30 +63,8 @@ export default async function ProductDetail({ params }: { params: Params }) {
       </nav>
 
       <div className="grid gap-6 rounded-md border border-gray-200 bg-white p-4 sm:p-6 lg:grid-cols-2 lg:gap-10 lg:p-8">
-        {/* Foto */}
-        <div className="aspect-square overflow-hidden rounded-md border border-gray-200 bg-white">
-          {product.image ? (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img src={product.image} alt={product.name} className="h-full w-full object-cover" />
-          ) : (
-            <div className="grid h-full w-full place-items-center">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth={1.2}
-                stroke="currentColor"
-                className="h-16 w-16 text-gray-300"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="m2.25 15.75 5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909M3.75 21h16.5A1.5 1.5 0 0 0 21.75 19.5V4.5A1.5 1.5 0 0 0 20.25 3H3.75A1.5 1.5 0 0 0 2.25 4.5v15A1.5 1.5 0 0 0 3.75 21Z"
-                />
-              </svg>
-            </div>
-          )}
-        </div>
+        {/* Galeri foto & video */}
+        <ProductGallery media={media} name={product.name} fallbackImage={product.image} />
 
         {/* Info */}
         <div className="flex flex-col">
@@ -86,6 +74,16 @@ export default async function ProductDetail({ params }: { params: Params }) {
           <h1 className="mt-1 text-xl font-bold text-navy-900 sm:text-2xl">
             {product.name}
           </h1>
+
+          {product.rating > 0 && (
+            <div className="mt-2 flex items-center gap-2 text-sm">
+              <Stars value={product.rating} size={16} showValue />
+              <span className="text-gray-400">·</span>
+              <span className="text-gray-500">{product.rating_count} ulasan</span>
+              <span className="text-gray-400">·</span>
+              <span className="text-gray-500">{formatCompact(product.sold)} terjual</span>
+            </div>
+          )}
 
           {product.sku && <p className="mt-1 text-sm text-gray-400">SKU: {product.sku}</p>}
 

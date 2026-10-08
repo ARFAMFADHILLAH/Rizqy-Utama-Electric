@@ -70,16 +70,6 @@ export default function Header() {
           </Link>
         </nav>
       </div>
-
-      {/* Search — mobile */}
-      <form action="/" method="get" className="border-t border-gray-100 px-4 py-2 md:hidden">
-        <input
-          type="search"
-          name="q"
-          placeholder="Cari produk…"
-          className="w-full rounded-md border border-gray-300 bg-white px-4 py-2 text-sm outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-500"
-        />
-      </form>
     </header>
   );
 }

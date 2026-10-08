@@ -1,6 +1,6 @@
-# ERD — Rizqy Utama Electric (MySQL existing)
+# ERD — Rizqy Utama Electric (Supabase Postgres, mengikuti skema MySQL)
 
-Tabel dibuat oleh implementasi sebelumnya dan dipakai apa adanya di database `rizqyutamaelectric`.
+Tabel dibuat oleh implementasi sebelumnya (MySQL) dan direplikasi di Supabase Postgres lewat `supabase/schema.sql` (identity auto-increment, `boolean`, `timestamptz`).
 
 ```
 users

@@ -17,7 +17,7 @@ export default async function CategoriesPage() {
   const categories = await query<CategoryRow[]>(
     `SELECT c.id, c.name, c.slug, COUNT(p.id) AS product_count
        FROM categories c
-       LEFT JOIN products p ON p.category_id = c.id AND p.is_active = 1
+       LEFT JOIN products p ON p.category_id = c.id AND p.is_active = TRUE
       GROUP BY c.id, c.name, c.slug
       ORDER BY c.name ASC`,
   );

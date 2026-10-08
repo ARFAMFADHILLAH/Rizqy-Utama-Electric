@@ -1,9 +1,9 @@
-# Rizqy Utama Electric — Online Store (Next.js + MySQL)
+# Rizqy Utama Electric — Online Store (Next.js + Supabase)
 
 Website toko material listrik **khusus tampilan pelanggan** (pembeli): katalog produk, keranjang belanja, dan checkout via WhatsApp. Panel admin menyusul di folder terpisah.
 
-- **Stack:** Next.js 16 (App Router) · React 19 · TypeScript · Tailwind CSS 4 · mysql2
-- **Database:** MySQL `rizqyutamaelectric` (tabel `products`, `categories` — sudah berisi data awal)
+- **Stack:** Next.js 16 (App Router) · React 19 · TypeScript · Tailwind CSS 4 · pg
+- **Database:** Supabase Postgres (schema + seed: [`supabase/schema.sql`](supabase/schema.sql)) — MySQL siap dipakai lagi lewat env (`SUPABASE_DB_URL` dikosongkan → fallback mysql2)
 - **Checkout:** kirim ringkasan order ke WhatsApp (nomor dari `NEXT_PUBLIC_WA_NUMBER`)
 - **Desain:** navy `#0A1F44` · orange `#FF7A00` · putih
 
@@ -24,8 +24,9 @@ Website toko material listrik **khusus tampilan pelanggan** (pembeli): katalog p
 ```sh
 npm install
 
-# Isi .env.local (sudah tersedia):
-#   MYSQL_*     -> koneksi MySQL 127.0.0.1:3306, db rizqyutamaelectric
+# Isi .env.local:
+#   SUPABASE_DB_URL -> koneksi Supabase Postgres (session pooler)
+#   MYSQL_*         -> cadangan; dipakai jika SUPABASE_DB_URL kosong
 #   NEXT_PUBLIC_WA_NUMBER -> nomor WA admin (628… tanpa + / 0)
 
 npm run dev        # http://localhost:3000
@@ -49,14 +50,14 @@ components/
   checkout/CheckoutForm.tsx (client) form + buat link wa.me
 context/CartContext.tsx   keranjang berbasis localStorage (React Context)
 lib/
-  db.ts                   pool mysql2 + helper query<T>
+  db.ts                   pool pg (Supabase) / mysql2 + helper query<T>
   types.ts                tipe Category & Product
   format.ts               format Rp, wa.me, build pesan order
 ```
 
 ## Database
 
-Tabel dibuat dari implementasi sebelumnya dan dipakai apa adanya (tanpa migrasi):
+Schema Supabase (Postgres) dibuat dari ERD MySQL yang ada — jalankan [`supabase/schema.sql`](supabase/schema.sql) sekali di SQL Editor Supabase:
 
 - `categories(id, name, slug)`
 - `products(id, category_id, name, slug, sku, description, price, stock, image, featured, is_active)`

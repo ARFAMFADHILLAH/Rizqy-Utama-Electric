@@ -1,6 +1,7 @@
 import Link from "next/link";
 import type { Product } from "@/lib/types";
-import { formatRp } from "@/lib/format";
+import { formatCompact, formatRp } from "@/lib/format";
+import Stars from "./Stars";
 import AddToCartWidget from "./AddToCartWidget";
 
 type Props = {
@@ -18,6 +19,7 @@ export default function ProductCard({ product, showButton = false }: Props) {
             <img
               src={product.image}
               alt={product.name}
+              loading="lazy"
               className="h-full w-full object-cover"
             />
           ) : (
@@ -50,6 +52,14 @@ export default function ProductCard({ product, showButton = false }: Props) {
           <h3 className="mt-0.5 text-sm font-medium leading-snug text-navy-900 line-clamp-2">
             {product.name}
           </h3>
+          {product.rating > 0 && (
+            <div className="mt-1 flex items-center gap-1">
+              <Stars value={product.rating} size={11} />
+              <span className="text-[10px] text-gray-400">
+                {product.rating.toFixed(1)} · {formatCompact(product.sold)} terjual
+              </span>
+            </div>
+          )}
           <div className="mt-auto pt-2">
             <p className="text-base font-bold text-navy-900">{formatRp(product.price)}</p>
             <p
