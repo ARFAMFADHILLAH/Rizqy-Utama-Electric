@@ -3,7 +3,7 @@
 Website toko material listrik **khusus tampilan pelanggan** (pembeli): katalog produk, keranjang belanja, dan checkout via WhatsApp. Panel admin menyusul di folder terpisah.
 
 - **Stack:** Next.js 16 (App Router, **static export**) · React 19 · TypeScript · Tailwind CSS 4 · pg
-- **Database:** Supabase Postgres (schema + seed: [`supabase/schema.sql`](supabase/schema.sql)) — MySQL siap dipakai lagi lewat env (`SUPABASE_DB_URL` dikosongkan → fallback mysql2)
+- **Database:** Supabase Postgres 
 - **Deploy:** Cloudflare Pages (HTML statis murni, output `out/`) — data di-*snapshot* saat `next build`
 - **Checkout:** kirim ringkasan order ke WhatsApp (nomor dari `NEXT_PUBLIC_WA_NUMBER`)
 - **Desain:** navy `#0A1F44` · orange `#FF7A00` · putih
@@ -19,23 +19,6 @@ Website toko material listrik **khusus tampilan pelanggan** (pembeli): katalog p
 | `/checkout` | Form pemesan (nama/HP/alamat/catatan) → buka `wa.me` berisi ringkasan order |
 
 Fitur global: **bottom navigation** mobile, **chatbot FAQ** (rule-based + lanjut ke WhatsApp), keranjang tersimpan di `localStorage`.
-
-> Panel `/admin` belum ada — disusul di iterasi berikutnya. Prompt siap pakai untuk membuatnya ada di [`docs/ADMIN-PROMPT.md`](docs/ADMIN-PROMPT.md).
-
-## Menjalankan
-
-```sh
-npm install
-
-# Isi .env.local:
-#   SUPABASE_DB_URL -> koneksi Supabase Postgres (session pooler)  [wajib saat build]
-#   MYSQL_*         -> cadangan; dipakai jika SUPABASE_DB_URL kosong
-#   NEXT_PUBLIC_WA_NUMBER  -> nomor WA admin (628… tanpa + / 0)
-#   NEXT_PUBLIC_STORE_NAME -> nama toko (opsional)
-
-npm run dev                    # http://localhost:3000
-npm run build && npm run preview   # build static -> out/, lalu serve lokal
-```
 
 ## Deploy ke Cloudflare Pages
 
@@ -80,12 +63,3 @@ lib/
   types.ts                tipe Category/Product/Banner/Testimonial/Media/FilterState
   format.ts               format Rp, wa.me, build pesan order
 ```
-
-
-## Database
-
-Schema Supabase (Postgres) dibuat dari ERD MySQL yang ada — jalankan [`supabase/schema.sql`](supabase/schema.sql) sekali di SQL Editor Supabase:
-
-- `categories(id, name, slug)`
-- `products(id, category_id, name, slug, sku, description, price, stock, image, featured, is_active)`
-- Terisi 6 kategori + 12 produk contoh + 1 admin (`users.is_admin`) untuk kebutuhan panel admin nanti.
