@@ -1,3 +1,4 @@
+export const runtime = "edge";
 import Link from "next/link";
 import { query } from "@/lib/db";
 import type { Banner, Category, Product, Testimonial } from "@/lib/types";
