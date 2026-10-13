@@ -19,7 +19,10 @@ function getPgPool(): Pool {
     pgPool = new Pool({
       connectionString: process.env.SUPABASE_DB_URL,
       ssl: { rejectUnauthorized: false },
-      max: 10,
+      // Session pooler Supabase membatasi jumlah client. Next.js memakai
+      // beberapa worker saat build, jadi batasi 1 koneksi per worker.
+      max: 1,
+      idleTimeoutMillis: 1000,
     });
   }
   return pgPool;

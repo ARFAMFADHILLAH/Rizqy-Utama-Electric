@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { storeName, waNumber } from "@/lib/format";
+import { contactEmail, storeName, waNumber } from "@/lib/format";
 import SocialLinks from "@/components/SocialLinks";
 
 export default function Footer() {
@@ -28,7 +28,14 @@ export default function Footer() {
         </div>
         <div className="text-sm">
           <p className="text-navy-300">Order & konsultasi via WhatsApp</p>
-          <p className="mt-1 text-lg font-bold text-white">+{waNumber()}</p>
+          <p className="mt-1 text-lg font-bold text-white">{`+${waNumber()}`}</p>
+          <p className="mt-3 text-navy-300">Email</p>
+          <a
+            href={`mailto:${contactEmail()}`}
+            className="mt-1 inline-block font-medium text-navy-100 transition hover:text-brand-400"
+          >
+            {contactEmail()}
+          </a>
         </div>
         <p className="text-xs text-navy-400 sm:pt-1">
           © {new Date().getFullYear()} {storeName()}. Semua hak dilindungi.

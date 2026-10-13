@@ -18,6 +18,6 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 - Filter/pencarian homepage **di sisi client** (query param dibaca via `useSearchParams`): `components/home/HomeBrowser.tsx` (client) → `lib/filter.ts` → `components/home/HomeView.tsx` (presentasional, dipakai juga sebagai fallback server-rendered). Logika filter harus tetap sinkron dengan `lib/filter.ts` bila menambah opsi.
 - `params` di halaman dynamic masih Promise → harus `await`.
 - Semua komponen yang memakai `useCart()` harus "use client". Keranjang = `localStorage` via `context/CartContext.tsx`.
-- Nomor WA toko: `NEXT_PUBLIC_WA_NUMBER` (format 628…) — nilai `NEXT_PUBLIC_*` ikut ter-bake saat build. Helpers di `lib/format.ts`.
-- Link sosmed/marketplace (Instagram, LinkedIn, Tokopedia, Shopee, Blibli): env `NEXT_PUBLIC_*_URL` dibaca `lib/social.ts`, dirender `components/SocialLinks.tsx` (header + footer). Kosong → `#`/nonaktif.
+- Nomor WA toko: `NEXT_PUBLIC_WA_NUMBER` (format 628…) — nilai `NEXT_PUBLIC_*` ikut ter-bake saat build. Helpers di `lib/format.ts`. Email kontak: `NEXT_PUBLIC_CONTACT_EMAIL` (default di `lib/format.ts`), tampil sebagai `mailto:` di footer.
+- Link sosmed/marketplace (Instagram, LinkedIn, Shopee, TikTok, Tokopedia, Blibli): env `NEXT_PUBLIC_*_URL` dibaca `lib/social.ts` (default URL ada di kode), dirender `components/SocialLinks.tsx` (header + footer). Kosong & tanpa default → `#`/nonaktif.
 - Commands: `npm run dev`, `npm run build` (menghasilkan `out/`), `npm run preview` (serve `out/`), `npm run lint`.

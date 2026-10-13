@@ -1,23 +1,33 @@
 export type SocialKey =
   | "instagram"
   | "linkedin"
-  | "tokopedia"
   | "shopee"
+  | "tiktok"
+  | "tokopedia"
   | "blibli";
 
 export type SocialLink = {
   key: SocialKey;
   label: string;
-  /** URL dari env; "#" bila belum diisi. */
+  /** URL dari env (diutamakan) atau default; "#" bila belum ada. */
   href: string;
-  /** Huruf untuk badge marketplace. */
-  short: string;
 };
 
 const PLACEHOLDER = "#";
 
-function url(value: string | undefined): string {
-  return value && value.trim() ? value.trim() : PLACEHOLDER;
+/** URL bawaan tiap platform. Env NEXT_PUBLIC_*_URL akan menimpa nilai ini. */
+const DEFAULTS: Record<SocialKey, string> = {
+  instagram: "https://www.instagram.com/rizqyutamaa",
+  linkedin: "https://www.linkedin.com/company/rizqy-utama-store/",
+  shopee: "https://id.shp.ee/2tXxjAkz",
+  tiktok: "https://vt.tiktok.com/ZSqPGBgrD/",
+  tokopedia: "https://tk.tokopedia.com/ZSbETw6kt/",
+  blibli: "https://blibli.onelink.me/GNtk/eeiqdxb6",
+};
+
+function resolve(key: SocialKey, value: string | undefined): string {
+  const trimmed = value?.trim();
+  return trimmed || DEFAULTS[key] || PLACEHOLDER;
 }
 
 /** Daftar link sosial & marketplace. Semua selalu ditampilkan; yang kosong memakai "#". */
@@ -26,32 +36,32 @@ export function socialLinks(): SocialLink[] {
     {
       key: "instagram",
       label: "Instagram",
-      short: "Ig",
-      href: url(process.env.NEXT_PUBLIC_INSTAGRAM_URL),
+      href: resolve("instagram", process.env.NEXT_PUBLIC_INSTAGRAM_URL),
     },
     {
       key: "linkedin",
       label: "LinkedIn",
-      short: "In",
-      href: url(process.env.NEXT_PUBLIC_LINKEDIN_URL),
-    },
-    {
-      key: "tokopedia",
-      label: "Tokopedia",
-      short: "T",
-      href: url(process.env.NEXT_PUBLIC_TOKOPEDIA_URL),
+      href: resolve("linkedin", process.env.NEXT_PUBLIC_LINKEDIN_URL),
     },
     {
       key: "shopee",
       label: "Shopee",
-      short: "S",
-      href: url(process.env.NEXT_PUBLIC_SHOPEE_URL),
+      href: resolve("shopee", process.env.NEXT_PUBLIC_SHOPEE_URL),
+    },
+    {
+      key: "tiktok",
+      label: "TikTok",
+      href: resolve("tiktok", process.env.NEXT_PUBLIC_TIKTOK_URL),
+    },
+    {
+      key: "tokopedia",
+      label: "Tokopedia",
+      href: resolve("tokopedia", process.env.NEXT_PUBLIC_TOKOPEDIA_URL),
     },
     {
       key: "blibli",
       label: "Blibli",
-      short: "B",
-      href: url(process.env.NEXT_PUBLIC_BLIBLI_URL),
+      href: resolve("blibli", process.env.NEXT_PUBLIC_BLIBLI_URL),
     },
   ];
 }

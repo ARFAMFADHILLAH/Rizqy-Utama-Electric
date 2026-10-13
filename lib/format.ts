@@ -16,11 +16,17 @@ export function formatSold(value: number): string {
 }
 
 export function waNumber(): string {
-  return process.env.NEXT_PUBLIC_WA_NUMBER ?? "";
+  const raw = (process.env.NEXT_PUBLIC_WA_NUMBER ?? "").replace(/\D/g, "");
+  // 08xxx → 62 8xxx agar tetap valid untuk tautan wa.me.
+  return raw.startsWith("0") ? "62" + raw.slice(1) : raw;
 }
 
 export function storeName(): string {
   return process.env.NEXT_PUBLIC_STORE_NAME ?? "Rizqy Utama Electric";
+}
+
+export function contactEmail(): string {
+  return process.env.NEXT_PUBLIC_CONTACT_EMAIL ?? "rizqyutamashop@gmail.com";
 }
 
 export function waLink(message: string): string {
