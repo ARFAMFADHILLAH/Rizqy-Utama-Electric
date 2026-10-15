@@ -81,13 +81,16 @@ export default function CartView({ products }: Props) {
               key={product.id}
               className="flex items-center gap-4 rounded-md border border-gray-200 bg-white p-4"
             >
-              <Link href={`/produk/${product.slug}`} className="shrink-0">
+              <Link
+                href={`/produk/?slug=${encodeURIComponent(product.slug)}`}
+                className="shrink-0"
+              >
                 <Thumb product={product} />
               </Link>
 
               <div className="min-w-0 flex-1">
                 <Link
-                  href={`/produk/${product.slug}`}
+                  href={`/produk/?slug=${encodeURIComponent(product.slug)}`}
                   className="line-clamp-1 font-semibold text-navy-900 hover:text-brand-600"
                 >
                   {product.name}

@@ -239,3 +239,40 @@ select * from (values
   ('Toko Jaya Listrik','Bogor',  4, 'Supplier andalan untuk kebutuhan harian toko. Harga dan stok konsisten.', 'https://i.pravatar.cc/80?img=8')
 ) as t (name, city, rating, message, avatar_url)
 where not exists (select 1 from testimonials);
+
+-- =========================================================================
+-- Row Level Security — akses baca publik untuk katalog (client-side fetching)
+-- =========================================================================
+-- Aplikasi membaca data langsung dari browser memakai anon key (PostgREST),
+-- jadi tabel katalog perlu policy SELECT untuk role `anon`.
+-- Tabel `users` sengaja TIDAK diberi policy => tetap tertutup dari publik.
+-- Blok ini idempoten (aman dijalankan berulang).
+alter table categories    enable row level security;
+alter table products      enable row level security;
+alter table product_media enable row level security;
+alter table banners       enable row level security;
+alter table testimonials  enable row level security;
+alter table users         enable row level security;
+
+grant usage on schema public to anon;
+grant select on categories, products, product_media, banners, testimonials to anon;
+
+drop policy if exists "public read categories" on categories;
+create policy "public read categories" on categories
+  for select to anon using (true);
+
+drop policy if exists "public read products" on products;
+create policy "public read products" on products
+  for select to anon using (true);
+
+drop policy if exists "public read product_media" on product_media;
+create policy "public read product_media" on product_media
+  for select to anon using (true);
+
+drop policy if exists "public read banners" on banners;
+create policy "public read banners" on banners
+  for select to anon using (true);
+
+drop policy if exists "public read testimonials" on testimonials;
+create policy "public read testimonials" on testimonials
+  for select to anon using (true);

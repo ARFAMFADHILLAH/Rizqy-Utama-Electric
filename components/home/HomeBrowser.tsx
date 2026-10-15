@@ -2,21 +2,27 @@
 
 import { useMemo } from "react";
 import { useSearchParams } from "next/navigation";
-import type { Banner, Category, FilterState, Product, Testimonial } from "@/lib/types";
+import type { FilterState } from "@/lib/types";
 import { filterProducts } from "@/lib/filter";
+import {
+  useActiveProducts,
+  useBanners,
+  useCategories,
+  useTestimonials,
+} from "@/lib/api";
 import HomeView from "@/components/home/HomeView";
-
-type Props = {
-  banners: Banner[];
-  categories: Category[];
-  testimonials: Testimonial[];
-  products: Product[];
-};
+import HomeSkeleton from "@/components/home/HomeSkeleton";
+import DataError from "@/components/DataError";
 
 const VALID_SORTS = new Set(["unggulan", "terbaru", "terlaris", "termurah", "termahal"]);
 
-export default function HomeBrowser({ banners, categories, testimonials, products }: Props) {
+export default function HomeBrowser() {
   const searchParams = useSearchParams();
+
+  const banners = useBanners();
+  const categories = useCategories();
+  const testimonials = useTestimonials();
+  const products = useActiveProducts();
 
   const filter = useMemo<FilterState>(() => {
     const sortParam = searchParams.get("sort") ?? "unggulan";
@@ -32,13 +38,41 @@ export default function HomeBrowser({ banners, categories, testimonials, product
     };
   }, [searchParams]);
 
-  const visible = useMemo(() => filterProducts(products, filter), [products, filter]);
+  const visible = useMemo(
+    () => filterProducts(products.data ?? [], filter),
+    [products.data, filter],
+  );
+
+  const error =
+    banners.error ?? categories.error ?? testimonials.error ?? products.error;
+  const isLoading =
+    banners.isLoading ||
+    categories.isLoading ||
+    testimonials.isLoading ||
+    products.isLoading;
+
+  if (error) {
+    return (
+      <DataError
+        onRetry={() => {
+          void Promise.all([
+            banners.mutate(),
+            categories.mutate(),
+            testimonials.mutate(),
+            products.mutate(),
+          ]);
+        }}
+      />
+    );
+  }
+
+  if (isLoading) return <HomeSkeleton />;
 
   return (
     <HomeView
-      banners={banners}
-      categories={categories}
-      testimonials={testimonials}
+      banners={banners.data ?? []}
+      categories={categories.data ?? []}
+      testimonials={testimonials.data ?? []}
       products={visible}
       filter={filter}
       initialOpenFilter={searchParams.get("filter") === "1"}

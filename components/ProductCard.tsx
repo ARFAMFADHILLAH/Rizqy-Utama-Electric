@@ -12,7 +12,7 @@ type Props = {
 export default function ProductCard({ product, showButton = false }: Props) {
   return (
     <div className="flex flex-col overflow-hidden rounded-md border border-gray-200 bg-white transition-shadow hover:shadow-md">
-      <Link href={`/produk/${product.slug}`} className="group flex flex-col">
+      <Link href={`/produk/?slug=${encodeURIComponent(product.slug)}`} className="group flex flex-col">
         <div className="relative aspect-square bg-white">
           {product.image ? (
             // eslint-disable-next-line @next/next/no-img-element
