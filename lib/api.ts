@@ -62,8 +62,7 @@ async function fetchActiveProducts(): Promise<Product[]> {
     .select(PRODUCT_SELECT)
     .eq("is_active", true)
     .order("featured", { ascending: false })
-    .order("id", { ascending: false })
-    .limit(60);
+    .order("id", { ascending: false });
   if (error) throw error;
   return ((data ?? []) as ProductRow[]).map(mapProduct);
 }

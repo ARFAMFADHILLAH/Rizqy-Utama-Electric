@@ -42,5 +42,5 @@ export function filterProducts(products: Product[], filter: FilterState): Produc
   });
 
   result.sort((a, b) => compareProducts(a, b, filter.sort));
-  return result.slice(0, 60);
+  return result;
 }
