@@ -12,6 +12,11 @@ export type FilterState = {
   sort: string;
 };
 
+export type ProductSpec = {
+  label: string;
+  value: string;
+};
+
 export type Product = {
   id: number;
   category_id: number;
@@ -19,6 +24,7 @@ export type Product = {
   slug: string;
   sku: string | null;
   description: string | null;
+  specs: ProductSpec[] | null;
   price: number;
   stock: number;
   image: string | null;
@@ -29,6 +35,7 @@ export type Product = {
   sold: number;
   category_name?: string;
   category_slug?: string;
+  category_is_active?: boolean;
 };
 
 export type Banner = {

@@ -22,6 +22,7 @@ create table if not exists categories (
   id         bigint generated always as identity primary key,
   name       text not null,
   slug       text not null unique,
+  is_active  boolean not null default true,
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now()
 );
@@ -34,6 +35,7 @@ create table if not exists products (
   slug        text not null unique,
   sku         text unique,
   description text,
+  specs       jsonb,
   price       integer not null check (price >= 0),
   stock       integer not null default 0 check (stock >= 0),
   image       text,
@@ -42,6 +44,15 @@ create table if not exists products (
   created_at  timestamptz not null default now(),
   updated_at  timestamptz not null default now()
 );
+
+-- Iterasi kategori aktif/nonaktif. Kategori nonaktif tetap tersimpan agar
+-- produknya tidak ikut terhapus; storefront menyembunyikan kategorinya saja.
+alter table categories add column if not exists is_active boolean not null default true;
+create index if not exists idx_categories_is_active on categories (is_active);
+
+-- Spesifikasi produk terstruktur (tabel "Detail Produk" ala marketplace).
+-- Contoh: [{"label":"Merek","value":"DEKO"},{"label":"Daya","value":"600 W"}]
+alter table products add column if not exists specs jsonb;
 
 create index if not exists idx_products_category_id on products (category_id);
 create index if not exists idx_products_is_active   on products (is_active);

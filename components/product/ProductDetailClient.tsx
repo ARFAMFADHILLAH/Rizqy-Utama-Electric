@@ -8,6 +8,7 @@ import { formatCompact, formatRp, storeName, waLink } from "@/lib/format";
 import ProductCard from "@/components/ProductCard";
 import AddToCartWidget from "@/components/AddToCartWidget";
 import ProductGallery from "@/components/product/ProductGallery";
+import ProductInfo from "@/components/product/ProductInfo";
 import Stars from "@/components/Stars";
 import DataError from "@/components/DataError";
 
@@ -83,12 +84,16 @@ export default function ProductDetailClient() {
       <nav className="mb-6 text-sm text-gray-500">
         <Link href="/" className="hover:text-brand-600">Beranda</Link>
         <span className="mx-2">/</span>
-        <Link
-          href={`/?kategori=${product.category_slug}`}
-          className="hover:text-brand-600"
-        >
-          {product.category_name}
-        </Link>
+        {product.category_is_active === false ? (
+          <span>{product.category_name}</span>
+        ) : (
+          <Link
+            href={`/?kategori=${product.category_slug}`}
+            className="hover:text-brand-600"
+          >
+            {product.category_name}
+          </Link>
+        )}
         <span className="mx-2">/</span>
         <span className="font-semibold text-navy-900">{product.name}</span>
       </nav>
@@ -133,11 +138,7 @@ export default function ProductDetailClient() {
               : "Stok sementara habis"}
           </p>
 
-          {product.description && (
-            <p className="mt-4 leading-relaxed whitespace-pre-line text-gray-700">
-              {product.description}
-            </p>
-          )}
+          <ProductInfo product={product} />
 
           <div className="mt-6 max-w-md">
             <AddToCartWidget productId={product.id} stock={product.stock} big />

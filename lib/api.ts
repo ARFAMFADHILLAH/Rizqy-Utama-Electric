@@ -10,11 +10,11 @@ import { supabase } from "@/lib/supabase";
 
 // Produk di-join dengan kategori lewat resource embedding PostgREST:
 // select("*, categories(name, slug)") -> { ..., categories: { name, slug } }
-type ProductRow = Omit<Product, "category_name" | "category_slug"> & {
-  categories: { name: string; slug: string } | null;
+type ProductRow = Omit<Product, "category_name" | "category_slug" | "category_is_active"> & {
+  categories: { name: string; slug: string; is_active: boolean } | null;
 };
 
-const PRODUCT_SELECT = "*, categories(name, slug)";
+const PRODUCT_SELECT = "*, categories(name, slug, is_active)";
 
 function mapProduct(row: ProductRow): Product {
   const { categories, ...rest } = row;
@@ -22,6 +22,7 @@ function mapProduct(row: ProductRow): Product {
     ...rest,
     category_name: categories?.name,
     category_slug: categories?.slug,
+    category_is_active: categories?.is_active,
   };
 }
 
@@ -40,6 +41,7 @@ async function fetchCategories(): Promise<Category[]> {
   const { data, error } = await supabase()
     .from("categories")
     .select("id, name, slug")
+    .eq("is_active", true)
     .order("name", { ascending: true });
   if (error) throw error;
   return (data ?? []) as Category[];
@@ -122,7 +124,11 @@ export type CategoryRow = Category & { product_count: number };
 async function fetchCategoryCounts(): Promise<CategoryRow[]> {
   // Setara LEFT JOIN + GROUP BY COUNT(p.id): hitung produk aktif per kategori di client.
   const [categories, products] = await Promise.all([
-    supabase().from("categories").select("id, name, slug").order("name", { ascending: true }),
+    supabase()
+      .from("categories")
+      .select("id, name, slug")
+      .eq("is_active", true)
+      .order("name", { ascending: true }),
     supabase().from("products").select("category_id").eq("is_active", true),
   ]);
   if (categories.error) throw categories.error;
