@@ -16,15 +16,22 @@ export function ProductDetailSkeleton() {
   return (
     <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8" aria-hidden>
       <div className="mb-6 h-4 w-64 animate-pulse rounded bg-gray-100" />
-      <div className="grid gap-6 rounded-md border border-gray-200 bg-white p-4 sm:p-6 lg:grid-cols-2 lg:gap-10 lg:p-8">
-        <div className="aspect-square animate-pulse rounded-md bg-gray-100" />
+      <div className="grid gap-6 rounded-md border border-gray-200 bg-white p-4 sm:p-6 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,1fr)] lg:gap-8 lg:p-8">
+        <div className="flex flex-col lg:flex-row lg:gap-3">
+          <div className="hidden h-[520px] w-20 flex-col gap-2 lg:flex">
+            <div className="h-20 w-20 animate-pulse rounded-md bg-gray-100" />
+            <div className="h-20 w-20 animate-pulse rounded-md bg-gray-100" />
+            <div className="h-20 w-20 animate-pulse rounded-md bg-gray-100" />
+          </div>
+          <div className="aspect-square w-full animate-pulse rounded-md bg-gray-100" />
+        </div>
         <div className="space-y-4">
           <div className="h-4 w-24 animate-pulse rounded bg-gray-100" />
           <div className="h-7 w-3/4 animate-pulse rounded bg-gray-200" />
           <div className="h-9 w-40 animate-pulse rounded bg-gray-200" />
           <div className="h-4 w-32 animate-pulse rounded bg-gray-100" />
-          <div className="h-24 w-full animate-pulse rounded bg-gray-100" />
-          <div className="h-12 w-full animate-pulse rounded bg-gray-200" />
+          <div className="mt-6 h-12 w-full animate-pulse rounded bg-gray-100" />
+          <div className="h-10 w-full animate-pulse rounded bg-gray-200" />
         </div>
       </div>
     </div>
@@ -98,7 +105,7 @@ export default function ProductDetailClient() {
         <span className="font-semibold text-navy-900">{product.name}</span>
       </nav>
 
-      <div className="grid gap-6 rounded-md border border-gray-200 bg-white p-4 sm:p-6 lg:grid-cols-2 lg:gap-10 lg:p-8">
+      <div className="grid gap-6 rounded-md border border-gray-200 bg-white p-4 sm:p-6 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,1fr)] lg:gap-8 lg:p-8">
         {/* Galeri foto & video */}
         <ProductGallery
           media={media ?? []}
