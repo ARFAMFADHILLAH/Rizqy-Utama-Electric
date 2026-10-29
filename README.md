@@ -99,3 +99,7 @@ lib/
   format.ts               format Rp, wa.me, build pesan order
 supabase/schema.sql       schema + seed + RLS publik (anon read-only)
 ```
+
+---
+
+© 2026 Arfa Muhammad Fadhillah. All rights reserved.
