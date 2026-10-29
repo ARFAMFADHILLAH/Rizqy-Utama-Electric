@@ -1,5 +1,9 @@
 # Rizqy Utama Electric — Online Store (Next.js + Supabase)
 
+<p align="center">
+  <img src="public/logo/circle-logo-rizqyutama.png" alt="Rizqy Utama Electric Logo" width="180" />
+</p>
+
 Website toko material listrik **khusus tampilan pelanggan** (pembeli): katalog produk, keranjang belanja, dan checkout via WhatsApp. Panel admin menyusul di folder terpisah.
 
 - **Stack:** Next.js 16 (App Router, **static export**) · React 19 · TypeScript · Tailwind CSS 4 · `@supabase/supabase-js` + `swr`

@@ -39,3 +39,8 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# opencode / assistant configs (local only)
+opencode.json
+AGENTS.md
+CLAUDE.md
