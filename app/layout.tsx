@@ -14,6 +14,10 @@ export const metadata: Metadata = {
   },
   description:
     "Material listrik, kabel, MCB, saklar, lampu LED, pipa, hingga alat ukur. Pesan mudah lewat WhatsApp.",
+  icons: {
+    icon: "/logo/circle-logo-rizqyutama.png",
+    apple: "/logo/circle-logo-rizqyutama.png",
+  },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

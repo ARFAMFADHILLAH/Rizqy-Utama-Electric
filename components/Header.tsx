@@ -10,13 +10,21 @@ export default function Header() {
   return (
     <header className="sticky top-0 z-40 border-b border-gray-200 bg-white shadow-sm">
       <div className="mx-auto flex max-w-7xl items-center gap-4 px-4 py-3 sm:px-6 lg:px-8">
-        <Link href="/" className="shrink-0 leading-tight">
-          <span className="block text-base font-extrabold tracking-tight text-navy-800 sm:text-lg">
-            RIZQY UTAMA
-          </span>
-          <span className="block text-[11px] font-bold uppercase tracking-widest text-brand-500">
-            Electric
-          </span>
+        <Link href="/" className="shrink-0 leading-tight flex items-center gap-2">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/logo/circle-logo-rizqyutama.png"
+            alt="Rizqy Utama Electric"
+            className="h-10 w-10 object-contain"
+          />
+          <div>
+            <span className="block text-base font-extrabold tracking-tight text-navy-800 sm:text-lg">
+              RIZQY UTAMA
+            </span>
+            <span className="block text-[11px] font-bold uppercase tracking-widest text-brand-500">
+              Electric
+            </span>
+          </div>
         </Link>
 
         {/* Search — desktop */}
